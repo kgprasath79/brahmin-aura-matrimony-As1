@@ -85,7 +85,7 @@ export default function LegalModal({ isOpen, onClose, defaultTab = "privacy" }: 
                 </p>
                 
                 <h4 className="font-bold text-amber-200 mt-4 text-sm">1. Information We Collect</h4>
-                <p>To provide accurate matching, we collect astrological parameters and personal credentials.</p>
+                <p>To provide accurate matching,  we collect astrological parameters and personal credentials.</p>
 
                 <h4 className="font-bold text-amber-200 mt-4 text-sm">2. Purpose of Data Processing</h4>
                 <p>We process data for authentic Porutham calculations and lineage security.</p>
