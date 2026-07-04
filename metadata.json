@@ -1,0 +1,6 @@
+{
+  "name": "Heritage Matrimony",
+  "description": "Niche Brahmin matrimony platform under heritagematrimony.com featuring precise Gotra filters, Nakshatra matches, simulated secure premium payment gateways, and a vendor commission-handling platform for astrologers, purohits, and wedding services.",
+  "requestFramePermissions": ["camera", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

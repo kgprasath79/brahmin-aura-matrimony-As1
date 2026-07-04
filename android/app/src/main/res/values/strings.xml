@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Brahmin Aura</string>
+    <string name="title_activity_main">Brahmin Aura</string>
+    <string name="package_name">com.brahmin.aura.matrimony</string>
+    <string name="custom_url_scheme">com.brahmin.aura.matrimony</string>
+</resources>

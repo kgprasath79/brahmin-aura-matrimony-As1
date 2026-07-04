@@ -1,0 +1,122 @@
+// Enterprise Matrimony Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  providerId    String?   @unique // Clerk ID or Supabase ID
+  username      String?   @unique
+  memberName    String?
+  mobileNumber  String?   @unique
+  email         String?   @unique
+  role          UserRole  @default(MEMBER)
+  verified      Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Profile Details
+  profile       Profile?
+
+  // Security & Sessions
+  sessions      Session[]
+  auditLogs     SecurityLog[]
+
+  // Matrimony Specifics
+  sentInterests      Interest[] @relation("SentInterests")
+  receivedInterests  Interest[] @relation("ReceivedInterests")
+  payments           Payment[]
+}
+
+model Profile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id])
+
+  name              String
+  age               Int
+  gender            String
+  sect              String
+  subSect           String?
+  gotra             String
+  nakshatra         String
+  rasi              String
+  padam             String?
+  lagnam            String?
+
+  occupation        String?
+  education         String?
+  income            String?
+  location          String
+  bio               String?  @db.Text
+  imageUrl          String?
+
+  // Astrological Data (JSON storage for charts)
+  rasiChart         Json?
+  amsamChart        Json?
+
+  // Family Details
+  parentStatus      String?
+  familyWishes      String?  @db.Text
+  expectations      String?  @db.Text
+
+  // Reference Check (Enterprise Security Requirement)
+  referenceName     String?
+  referenceMobile   String?
+  referenceRelation String?
+}
+
+model Interest {
+  id          String   @id @default(uuid())
+  senderId    String
+  sender      User     @relation("SentInterests", fields: [senderId], references: [id])
+  receiverId  String
+  receiver    User     @relation("ReceivedInterests", fields: [receiverId], references: [id])
+  status      String   @default("PENDING") // PENDING, ACCEPTED, DECLINED
+  createdAt   DateTime @default(now())
+}
+
+model Payment {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  txnId           String   @unique
+  amount          Float
+  planName        String
+  status          String   // COMPLETED, FAILED, REFUNDED
+  createdAt       DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model SecurityLog {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  event     String
+  severity  String
+  details   String?
+  timestamp DateTime @default(now())
+}
+
+enum UserRole {
+  MEMBER
+  SUPER_ADMIN
+  MODERATOR
+  SUPPORT_ADMIN
+}
